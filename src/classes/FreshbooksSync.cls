@@ -213,8 +213,8 @@ public with sharing class FreshbooksSync {
 		try{
 			clientsSearchResults = FreshbooksAPI.getClients();
 		}catch(Exception e){
+			ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.ERROR, 'I tried to login using those credentials but it did not work:  '+e) );
 			//ApexPages.addmessages(e);
-			ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.ERROR, 'I tried to login using those credentials but it did not work.  Maybe double check them?') );
 			return;
 		}
 		ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.INFO, 'Your freshbooks credentials were tested successfully.  Wooha!') );

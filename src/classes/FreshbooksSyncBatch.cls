@@ -92,6 +92,7 @@ global class FreshbooksSyncBatch implements Schedulable, Database.Batchable<Inte
 	public static Id runFullSyncNow(){
 		FreshbooksSyncBatch b = new FreshbooksSyncBatch();
 		b.taskQueue.add(new FreshbooksSyncBatch.FreshbooksSyncTask('all_clients',''));
+		b.taskQueue.add(new FreshbooksSyncBatch.FreshbooksSyncTask('projects_by_client','')); // for internal projects
 		return Database.executeBatch(b,1);
 	}
 	global void execute(SchedulableContext SC) {

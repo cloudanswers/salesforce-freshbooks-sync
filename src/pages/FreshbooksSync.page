@@ -1,28 +1,28 @@
 <apex:page controller="FreshbooksSync" action="{!immediateAction}">
 <apex:form >
 
-<apex:sectionHeader title="Freshbooks Sync" 
+<apex:sectionHeader title="FreshBooks Sync" 
 	subtitle="{!pageTitle}"/>
 
 <apex:pageMessages />
 
 <apex:outputPanel rendered="{!pageMode='home'}">
-	<apex:pageBlock title="Welcome to the enterprise connector for Freshbooks and Salesforce">
+	<apex:pageBlock title="Welcome to the enterprise connector for FreshBooks and Salesforce">
 		<p>
-			This simple integration allows you to use your Freshbooks data in Salesforce.
-			You can update all data related to an account using the "Update from Freshbooks" button
+			This simple integration allows you to use your FreshBooks data in Salesforce.
+			You can update all data related to an account using the "Update from FreshBooks" button
 			or allow the scheduled job to copy all of your data every day.
 		</p>
 		<p>
-			It has never been easier to use Freshbooks and Salesforce together.
+			It has never been easier to use FreshBooks and Salesforce together.
 		</p>
 		<p>
 			Have you scheduled your updates?  
-			This integration can automatically download all your data from freshbooks on a nightly basis.
+			This integration can automatically download all your data from freshBooks on a nightly basis.
 			<ol>
 				<li>
 					Click here to look at all scheduled jobs.  
-					The freshbooks scheduled job is titled "Freshbooks Scheduled Update":
+					The freshBooks scheduled job is titled "FreshBooks Scheduled Update":
 					<apex:outputLink value="/08e">Click here to view All Scheduled Jobs</apex:outputLink>
 				</li>
 				<li>
@@ -42,14 +42,14 @@
 	
 	<apex:actionRegion >
 	<apex:outputPanel rendered="{!canSeeSettings}">
-		<apex:pageBlock title="Edit Freshbooks Connection Settings">
+		<apex:pageBlock title="Edit FreshBooks Connection Settings">
 			<apex:pageBlockButtons >
 				<apex:commandButton value="Save Settings" action="{!saveSettings}"/>
 				<apex:commandButton value="Test Saved Settings" action="{!testSettings}"/>
 			</apex:pageBlockButtons>
 			<apex:pageBlockSection columns="1">
 				<apex:pageBlockSectionItem >
-					<apex:outputLabel value="Freshbooks Site"/>
+					<apex:outputLabel value="FreshBooks Site"/>
 					<apex:outputPanel >
 						https://<apex:inputText value="{!settings.Subdomain__c}"/>.freshbooks.com
 					</apex:outputPanel>

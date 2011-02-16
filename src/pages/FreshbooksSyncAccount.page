@@ -16,7 +16,7 @@
 </apex:outputPanel>
 
 <apex:pageBlock rendered="{!pageMode='clientSearch'}">
-	<i>Warning:  If you select an existing Client from Freshbooks, the data from freshbooks will overwrite the account:
+	<i>Warning:  If you select an existing client from FreshBooks, the data from FreshBooks will overwrite the account:
 	Phone, Fax, Name, and Billing Address</i>
 	<apex:pageBlockSection >
 		<apex:commandbutton value="Refresh" />
@@ -35,7 +35,7 @@
 
 <apex:pageBlock rendered="{!pageMode='clientSync'}">
 	<apex:image url="{!URLFOR($Resource.freshbooks_connector_resources, 'ajax-loader.gif')}"/>
-	Syncing:  Your data is being pulled from Freshbooks and loaded to Salesforce.com.  This process usually takes 5 seconds if you have a little data, 15 seconds or longer if this account has a lot of data.
+	Syncing:  Your data is being pulled from FreshBooks and loaded to Salesforce.com.  This process usually takes 5 seconds if you have a little data, 15 seconds or longer if this account has a lot of data.
 	<apex:actionPoller action="{!ajaxCheckStatus}" 
 		rerender="informationMessageContainer"
 		status="counterStatus"

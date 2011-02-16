@@ -68,7 +68,7 @@ public with sharing class FreshbooksSync {
 	private Id scheduleSyncBatch(String clientId){
 		FreshbooksSyncBatch batch = new FreshbooksSyncBatch();
 		batch.taskQueue = new List<FreshbooksSyncBatch.FreshbooksSyncTask>{
-			new FreshbooksSyncBatch.FreshbooksSyncTask('client',clientId)
+			new FreshbooksSyncBatch.FreshbooksSyncTask('client',clientId,1)
 		};
 		return Database.executeBatch(batch,1);
 	}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Freshbooks Time Entry</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Freshbooks Time Entries</value>
+    </caseValues>
+    <fields>
+        <label><!-- Date --></label>
+        <name>Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Freshbooks Project --></label>
+        <name>Freshbooks_Project__c</name>
+        <relationshipLabel><!-- Freshbooks Time Entries --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Freshbooks Time Entry ID --></label>
+        <name>Freshbooks_Time_Entry_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Hours --></label>
+        <name>Hours__c</name>
+    </fields>
+    <fields>
+        <label><!-- Notes --></label>
+        <name>Notes__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

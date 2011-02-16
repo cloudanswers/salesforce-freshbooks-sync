@@ -1,0 +1,72 @@
+<apex:page controller="FreshbooksSync" action="{!immediateAction}">
+<apex:form >
+
+<apex:sectionHeader title="Freshbooks Sync" 
+	subtitle="{!pageTitle}"/>
+
+<apex:pageMessages />
+
+<apex:outputPanel rendered="{!pageMode='home'}">
+	<apex:pageBlock title="Welcome to the enterprise connector for Freshbooks and Salesforce">
+		<p>
+			This simple integration allows you to use your Freshbooks data in Salesforce.
+			You can update all data related to an account using the "Update from Freshbooks" button
+			or allow the scheduled job to copy all of your data every day.
+		</p>
+		<p>
+			It has never been easier to use Freshbooks and Salesforce together.
+		</p>
+		<p>
+			Have you scheduled your updates?  
+			This integration can automatically download all your data from freshbooks on a nightly basis.
+			<ol>
+				<li>
+					Click here to look at all scheduled jobs.  
+					The freshbooks scheduled job is titled "Freshbooks Scheduled Update":
+					<apex:outputLink value="/08e">Click here to view All Scheduled Jobs</apex:outputLink>
+				</li>
+				<li>
+					If you do not find an existing job, click here to schedule the job to run at midnight:
+					<apex:commandButton value="Schedule Batch Update" action="{!scheduleBatchUpdate}"/>
+				</li>
+				
+			</ol>
+		</p>
+		<p>
+			Did you just log a bunch of hours and need to do a full sync now?
+			Are you sure you can't wait until the midnight scheduled job?
+			That's why we made this nice button that lets you start the full sync job immediately:
+			<apex:commandButton value="Run Full Sync Now" action="{!runFullSyncNow}"/>
+		</p>
+	</apex:pageBlock>
+	
+	<apex:actionRegion >
+	<apex:outputPanel rendered="{!canSeeSettings}">
+		<apex:pageBlock title="Edit Freshbooks Connection Settings">
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Save Settings" action="{!saveSettings}"/>
+				<apex:commandButton value="Test Saved Settings" action="{!testSettings}"/>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Freshbooks Site"/>
+					<apex:outputPanel >
+						https://<apex:inputText value="{!settings.Subdomain__c}"/>.freshbooks.com
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Token"/>
+					<apex:inputSecret value="{!settings.Token__c}"/>
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:outputPanel>
+	</apex:actionRegion>
+	
+	<apex:outputLink value="http://www.cambridgecloudpartners.com" id="poweredByLink" target="_blank">
+		<apex:image url="{!URLFOR($Resource.freshbooks_connector_resources, 'poweredby.gif')}" width="401" height="44" />
+	</apex:outputLink>
+</apex:outputPanel>
+
+</apex:form>
+</apex:page>

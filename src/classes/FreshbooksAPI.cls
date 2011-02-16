@@ -274,13 +274,16 @@ public with sharing class FreshbooksAPI {
 			field = 'description';
 			project.Description__c = node.getChildElement('description',FRESHBOOKS_XML_API_NS).getText();
 			field = 'rate';
-			project.Rate__c = Double.valueOf(node.getChildElement('rate',FRESHBOOKS_XML_API_NS).getText());
+			if(node.getChildElement('rate',FRESHBOOKS_XML_API_NS).getText().trim() != '')
+				project.Rate__c = Double.valueOf(node.getChildElement('rate',FRESHBOOKS_XML_API_NS).getText());
 			field = 'bill_method';
 			project.Bill_Method__c = node.getChildElement('bill_method',FRESHBOOKS_XML_API_NS).getText();
 			field = 'client_id';
-			project.Account__r = new Account(Freshbooks_Client_ID__c = node.getChildElement('client_id',FRESHBOOKS_XML_API_NS).getText());
+			if(node.getChildElement('client_id',FRESHBOOKS_XML_API_NS).getText().trim() != '')
+				project.Account__r = new Account(Freshbooks_Client_ID__c = node.getChildElement('client_id',FRESHBOOKS_XML_API_NS).getText());
 			field = 'hour_budget';
-			project.Hour_Budget__c = Double.valueOf(node.getChildElement('hour_budget',FRESHBOOKS_XML_API_NS).getText());
+			if(node.getChildElement('hour_budget',FRESHBOOKS_XML_API_NS).getText().trim() != '')
+				project.Hour_Budget__c = Double.valueOf(node.getChildElement('hour_budget',FRESHBOOKS_XML_API_NS).getText());
 			//TODO: link to staff in future version
 			//staff/staff_id
 			//staff/staff_id

@@ -8,7 +8,7 @@
     <applicationVisibilities>
         <application>Freshbooks2salesforce</application>
         <default>false</default>
-        <visible>false</visible>
+        <visible>true</visible>
     </applicationVisibilities>
     <classAccesses>
         <apexClass>CambridgeCloudPartnersREST</apexClass>
@@ -24,14 +24,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>FreshbooksSyncBatch</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>XMLDom</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>startHereController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <fieldLevelSecurities>
@@ -1333,17 +1325,21 @@
         <apexPage>FreshbooksSyncAccount</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
-    <pageAccesses>
-        <apexPage>Start_Here</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Idea.InternalIdeasIdeaRecordType</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <tabVisibilities>
-        <tab>Start_Here</tab>
+        <tab>Freshbooks_Invoice__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Freshbooks_Project__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Freshbooks_Sync</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

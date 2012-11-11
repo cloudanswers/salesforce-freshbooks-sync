@@ -33,6 +33,7 @@
         <type>Default</type>
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
     <enableActivities>false</enableActivities>
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
@@ -40,6 +41,7 @@
     <enableReports>true</enableReports>
     <fields>
         <fullName>Account__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Account</label>
         <referenceTo>Account</referenceTo>
@@ -49,6 +51,7 @@
     </fields>
     <fields>
         <fullName>Amount_Outstanding__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Amount Outstanding</label>
         <precision>18</precision>
@@ -58,6 +61,7 @@
     </fields>
     <fields>
         <fullName>Amount__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Amount</label>
         <precision>18</precision>
@@ -68,6 +72,7 @@
     <fields>
         <fullName>Freshbooks_Invoice_ID__c</fullName>
         <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
         <externalId>true</externalId>
         <label>Freshbooks Invoice ID</label>
         <length>255</length>
@@ -77,6 +82,7 @@
     </fields>
     <fields>
         <fullName>Invoice_Date__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Invoice Date</label>
         <required>false</required>
@@ -84,6 +90,7 @@
     </fields>
     <fields>
         <fullName>Status__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Status</label>
         <length>255</length>

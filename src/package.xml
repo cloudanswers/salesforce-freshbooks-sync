@@ -74,23 +74,6 @@
         <name>DataCategoryGroup</name>
     </types>
     <types>
-        <members>unfiled$public</members>
-        <members>unfiled$public/MarketingProductInquiryResponse</members>
-        <members>unfiled$public/SUPPORTSelfServiceNewCommentNotificationSAMPLE</members>
-        <members>unfiled$public/SUPPORTSelfServiceNewUserLoginInformationSAMPLE</members>
-        <members>unfiled$public/SUPPORTSelfServiceResetPasswordSAMPLE</members>
-        <members>unfiled$public/SalesNewCustomerEmail</members>
-        <members>unfiled$public/SupportCaseAssignmentNotification</members>
-        <members>unfiled$public/SupportCaseCreatedPhoneInquiries</members>
-        <members>unfiled$public/SupportCaseCreatedWebInquiries</members>
-        <members>unfiled$public/SupportCaseResponse</members>
-        <members>unfiled$public/SupportEscalatedCaseNotification</members>
-        <members>unfiled$public/SupportEscalatedCaseReassignment</members>
-        <members>unfiled$public/SupportSelfServiceNewLoginandPassword</members>
-        <members>unfiled$public/SupportSelfServiceResetPassword</members>
-        <name>EmailTemplate</name>
-    </types>
-    <types>
         <members>*</members>
         <name>HomePageComponent</name>
     </types>
@@ -107,16 +90,8 @@
         <name>Letterhead</name>
     </types>
     <types>
-        <members>*</members>
-        <name>Profile</name>
-    </types>
-    <types>
         <members>ApexDevNet</members>
         <name>RemoteSiteSetting</name>
-    </types>
-    <types>
-        <members>unfiled$public</members>
-        <name>Report</name>
     </types>
     <types>
         <members>*</members>

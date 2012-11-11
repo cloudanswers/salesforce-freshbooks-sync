@@ -44,6 +44,7 @@
     <fields>
         <fullName>Freshbooks_Client_ID__c</fullName>
         <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
         <externalId>true</externalId>
         <label>Freshbooks Client ID</label>
         <length>255</length>
@@ -54,6 +55,7 @@
     </fields>
     <fields>
         <fullName>Freshbooks_Email__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Freshbooks Email</label>
         <length>255</length>
@@ -64,6 +66,7 @@
     </fields>
     <fields>
         <fullName>Freshbooks_Notes__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Freshbooks Notes</label>
         <length>32000</length>

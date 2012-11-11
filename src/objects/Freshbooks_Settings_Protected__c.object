@@ -6,6 +6,7 @@
     <enableFeeds>false</enableFeeds>
     <fields>
         <fullName>Subdomain__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Subdomain</label>
         <length>255</length>
@@ -15,6 +16,7 @@
     </fields>
     <fields>
         <fullName>Token__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Token</label>
         <length>255</length>

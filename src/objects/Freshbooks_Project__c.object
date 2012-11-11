@@ -33,6 +33,7 @@
         <type>Default</type>
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
     <enableActivities>false</enableActivities>
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
@@ -40,6 +41,7 @@
     <enableReports>true</enableReports>
     <fields>
         <fullName>Account__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Account</label>
         <referenceTo>Account</referenceTo>
@@ -49,6 +51,7 @@
     </fields>
     <fields>
         <fullName>Bill_Method__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Bill Method</label>
         <length>255</length>
@@ -58,6 +61,7 @@
     </fields>
     <fields>
         <fullName>Description__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Description</label>
         <length>32000</length>
@@ -67,6 +71,7 @@
     <fields>
         <fullName>Freshbooks_Project_ID__c</fullName>
         <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
         <externalId>true</externalId>
         <label>Freshbooks Project ID</label>
         <length>255</length>
@@ -76,6 +81,7 @@
     </fields>
     <fields>
         <fullName>Hour_Budget__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Hour Budget</label>
         <precision>18</precision>
@@ -86,6 +92,7 @@
     </fields>
     <fields>
         <fullName>Rate__c</fullName>
+        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Rate</label>
         <precision>18</precision>

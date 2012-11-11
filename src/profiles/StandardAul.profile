@@ -26,14 +26,6 @@
         <apexClass>FreshbooksSyncBatch</apexClass>
         <enabled>false</enabled>
     </classAccesses>
-    <classAccesses>
-        <apexClass>XMLDom</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>startHereController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>Account.AccountNumber</field>
@@ -1331,10 +1323,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>FreshbooksSyncAccount</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>Start_Here</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <recordTypeVisibilities>

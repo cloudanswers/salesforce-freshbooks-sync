@@ -262,19 +262,19 @@
         <fullName>InternationalEscalations</fullName>
         <filterScope>Queue</filterScope>
         <label>International - Escalations</label>
-        <queue>International - Escalations</queue>
+        <queue>InternationalEscalations</queue>
     </listViews>
     <listViews>
         <fullName>InternationalPlatinumGold</fullName>
         <filterScope>Queue</filterScope>
         <label>International - Platinum/Gold</label>
-        <queue>International - Platinum/Gold</queue>
+        <queue>InternationalPlatinumGold</queue>
     </listViews>
     <listViews>
         <fullName>InternationalSilverBronze</fullName>
         <filterScope>Queue</filterScope>
         <label>International - Silver/Bronze</label>
-        <queue>International - Silver/Bronze</queue>
+        <queue>InternationalSilverBronze</queue>
     </listViews>
     <listViews>
         <fullName>MyCases</fullName>
@@ -295,25 +295,25 @@
         <fullName>PartnerRelations</fullName>
         <filterScope>Queue</filterScope>
         <label>Partner Relations</label>
-        <queue>Partner Relations</queue>
+        <queue>PartnerRelations</queue>
     </listViews>
     <listViews>
         <fullName>USEscalations</fullName>
         <filterScope>Queue</filterScope>
         <label>US - Escalations</label>
-        <queue>US - Escalations</queue>
+        <queue>USEscalations</queue>
     </listViews>
     <listViews>
         <fullName>USPlatinumGold</fullName>
         <filterScope>Queue</filterScope>
         <label>US - Platinum/Gold</label>
-        <queue>US - Platinum/Gold</queue>
+        <queue>USPlatinumGold</queue>
     </listViews>
     <listViews>
         <fullName>USSilverBronze</fullName>
         <filterScope>Queue</filterScope>
         <label>US - Silver/Bronze</label>
-        <queue>US - Silver/Bronze</queue>
+        <queue>USSilverBronze</queue>
     </listViews>
     <webLinks>
         <fullName>UpsellCrosssellOpportunity</fullName>

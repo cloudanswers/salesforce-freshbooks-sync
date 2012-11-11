@@ -41,12 +41,14 @@
     <enableReports>true</enableReports>
     <fields>
         <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Account</label>
         <referenceTo>Account</referenceTo>
         <relationshipLabel>Freshbooks Projects</relationshipLabel>
         <relationshipName>Freshbooks_Projects</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>

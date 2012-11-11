@@ -4,4 +4,5 @@
     <description>Start Here</description>
     <label>Force.com</label>
     <tab>standard-Chatter</tab>
+    <tab>standard-File</tab>
 </CustomApplication>

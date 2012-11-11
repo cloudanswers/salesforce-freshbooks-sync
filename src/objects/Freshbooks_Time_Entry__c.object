@@ -49,12 +49,14 @@
     </fields>
     <fields>
         <fullName>Freshbooks_Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Freshbooks Project</label>
         <referenceTo>Freshbooks_Project__c</referenceTo>
         <relationshipLabel>Freshbooks Time Entries</relationshipLabel>
         <relationshipName>Freshbooks_Time_Entries</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>

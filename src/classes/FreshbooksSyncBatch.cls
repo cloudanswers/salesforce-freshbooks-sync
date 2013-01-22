@@ -1,17 +1,31 @@
 global class FreshbooksSyncBatch implements Schedulable, Database.Batchable<Integer>, Database.AllowsCallouts, Database.Stateful{
+	global class MyException extends Exception {}
 	public List<FreshbooksSyncTask> taskQueue = new List<FreshbooksSyncTask>();
 	public Set<String> taskQueueSeen = new Set<String>();
 	public List<Integer> iterator; // allows us to step through the taskqueue list dynamically
 	
 	global Iterable<Integer> start(Database.batchableContext info){
-		// create a padded iterator so that we can add work to the work queue (taskQueue)
+		// create a padded iterator so that we can add work to the work queue
 		iterator = new List<Integer>();
 		Integer iterationsNeeded = 50 * taskQueue.size();
 		if(!taskQueue.isEmpty() && taskQueue.get(0).action.equals('all_clients'))
 			iterationsNeeded = 1000;
+		if(Test.isRunningTest())
+			iterationsNeeded = 1;
 		for(Integer i = 0 ; i < iterationsNeeded ; i++)
 			iterator.add(i);
 		return iterator;
+	}
+	
+	global void requeue(FreshbooksSyncTask t){
+		requeue(t, null);
+	}
+
+	global void requeue(FreshbooksSyncTask t, Exception e){
+		if(t.retries>3) throw e; 
+		taskQueueSeen.remove(t.fingerprint());
+		taskQueue.add(t);
+		t.retries++;
 	}
 	
 	global void execute(Database.BatchableContext BC, List<Integer> scope){
@@ -22,7 +36,13 @@ global class FreshbooksSyncBatch implements Schedulable, Database.Batchable<Inte
 				continue;
 			taskQueueSeen.add(t.fingerprint());
 			if(t.action.equals('all_clients')){
-				Account[] accounts = FreshbooksAPI.getClients(t.page,null);
+				Account[] accounts;
+				try{
+					accounts = FreshbooksAPI.getClients(t.page,null);
+				}catch(Exception e){
+					requeue(t, e);
+					continue;
+				}
 				if(accounts.size() == FreshbooksAPI.LIST_PAGE_COUNT_MAX)
 					taskQueue.add(new FreshbooksSyncTask('all_clients',null,t.page+1));
 				List<Account> upsertBatch = new List<Account>();
@@ -36,24 +56,48 @@ global class FreshbooksSyncBatch implements Schedulable, Database.Batchable<Inte
 					}
 				}
 			}else if(t.action.equals('client')){
-				Account a = FreshbooksAPI.getClient(t.Id);
+				Account a;
+				try{
+					a = FreshbooksAPI.getClient(t.Id);
+				}catch(Exception e){
+					requeue(t, e);
+					continue;
+				}
 				upsert a Freshbooks_Client_ID__c;
 				taskQueue.add(new FreshbooksSyncTask('projects_by_client',t.Id,1));
 				taskQueue.add(new FreshbooksSyncTask('invoices_by_client',t.Id,1));
 			}else if(t.action.equals('projects_by_client')){
-				Freshbooks_Project__c[] projects = FreshbooksAPI.getProjects(t.page,new Map<String,String>{'client_id'=>t.id});
+				Freshbooks_Project__c[] projects;
+				try{
+					projects = FreshbooksAPI.getProjects(t.page,new Map<String,String>{'client_id'=>t.id});
+				}catch(Exception e){
+					requeue(t, e);
+					continue;
+				}
 				if(projects.size() == FreshbooksAPI.LIST_PAGE_COUNT_MAX)
 					taskQueue.add(new FreshbooksSyncTask('projects_by_client',t.id,t.page+1));
 				upsert projects Freshbooks_Project_ID__c;
 				for(Freshbooks_Project__c p : projects)
 					taskQueue.add(new FreshbooksSyncTask('time_entries_by_project',p.Freshbooks_Project_ID__c,1));
 			}else if(t.action.equals('time_entries_by_project')){
-				Freshbooks_Time_Entry__c[] timeEntries = FreshbooksAPI.getTimeEntries(t.page,new Map<String,String>{'project_id'=>t.id});
+				Freshbooks_Time_Entry__c[] timeEntries;
+				try{
+					timeEntries = FreshbooksAPI.getTimeEntries(t.page,new Map<String,String>{'project_id'=>t.id});
+				}catch(Exception e){
+					requeue(t, e);
+					continue;
+				}
 				if(timeEntries.size() == FreshbooksAPI.LIST_PAGE_COUNT_MAX)
 					taskQueue.add(new FreshbooksSyncTask('time_entries_by_project',t.id,t.page+1));
 				upsert timeEntries Freshbooks_Time_Entry_ID__c;
 			}else if(t.action.equals('invoices_by_client')){
-				Freshbooks_Invoice__c[] invoices = FreshbooksAPI.getInvoices(t.page,new Map<String,String>{'client_id'=>t.id});
+				Freshbooks_Invoice__c[] invoices;
+				try{
+					invoices = FreshbooksAPI.getInvoices(t.page,new Map<String,String>{'client_id'=>t.id});
+				}catch(Exception e){
+					requeue(t, e);
+					continue;
+				}
 				if(invoices.size() == FreshbooksAPI.LIST_PAGE_COUNT_MAX)
 					taskQueue.add(new FreshbooksSyncTask('invoices_by_client',t.id,t.page+1));
 				upsert invoices Freshbooks_Invoice_ID__c;
@@ -65,6 +109,7 @@ global class FreshbooksSyncBatch implements Schedulable, Database.Batchable<Inte
 	}
 	
 	global class FreshbooksSyncTask{
+		public Integer retries = 0;
 		public String action {get;set;}
 		public String id {get;set;}
 		public Integer page {get;set;}
@@ -119,7 +164,6 @@ global class FreshbooksSyncBatch implements Schedulable, Database.Batchable<Inte
 	public static void testScheduler(){
 		FreshbooksAPI.inTest = true;
 		Test.startTest();
-		//String jobId = System.schedule('testScheduledApex',getCRON(), new FreshbooksSyncBatch());
 		FreshbooksSyncBatch.schedule();
 		String jobId = FreshbooksSyncBatch.scheduledBatchId;
 		CronTrigger ct = [SELECT id, CronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE id = :jobId];

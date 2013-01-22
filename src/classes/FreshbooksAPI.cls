@@ -250,6 +250,14 @@ public with sharing class FreshbooksAPI {
 		return projectsToReturn;
 	}
 	
+	private static String getText(DOM.XMLNode parentNode, String nodeName){
+		try{
+			return parentNode.getChildElement(nodeName,FRESHBOOKS_XML_API_NS).getText();
+		}catch(Exception e){
+			return '';
+		}
+	}
+	
 	private static Freshbooks_Project__c xml2Project(Dom.Xmlnode node){
 		Freshbooks_Project__c project = new Freshbooks_Project__c();
 		String field = '';
@@ -268,22 +276,22 @@ public with sharing class FreshbooksAPI {
 			zipperXmlToSObject(node,fieldMappings,(SObject)project);
 			*/
 			field = 'project_id';
-			project.Freshbooks_Project_ID__c = node.getChildElement('project_id',FRESHBOOKS_XML_API_NS).getText();
+			project.Freshbooks_Project_ID__c = getText(node, 'project_id');
 			field = 'name';
-			project.Name = node.getChildElement('name',FRESHBOOKS_XML_API_NS).getText();
+			project.Name = getText(node, 'name');
 			field = 'description';
-			project.Description__c = node.getChildElement('description',FRESHBOOKS_XML_API_NS).getText();
+			project.Description__c = getText(node, 'description');
 			field = 'rate';
-			if(node.getChildElement('rate',FRESHBOOKS_XML_API_NS).getText().trim() != '')
-				project.Rate__c = Double.valueOf(node.getChildElement('rate',FRESHBOOKS_XML_API_NS).getText());
+			if(getText(node, 'rate').trim() != '')
+				project.Rate__c = Double.valueOf(getText(node, 'rate'));
 			field = 'bill_method';
-			project.Bill_Method__c = node.getChildElement('bill_method',FRESHBOOKS_XML_API_NS).getText();
+			project.Bill_Method__c = getText(node, 'bill_method');
 			field = 'client_id';
-			if(node.getChildElement('client_id',FRESHBOOKS_XML_API_NS).getText().trim() != '')
-				project.Account__r = new Account(Freshbooks_Client_ID__c = node.getChildElement('client_id',FRESHBOOKS_XML_API_NS).getText());
+			if(getText(node, 'client_id').trim() != '')
+				project.Account__r = new Account(Freshbooks_Client_ID__c = getText(node, 'client_id'));
 			field = 'hour_budget';
-			if(node.getChildElement('hour_budget',FRESHBOOKS_XML_API_NS).getText().trim() != '')
-				project.Hour_Budget__c = Double.valueOf(node.getChildElement('hour_budget',FRESHBOOKS_XML_API_NS).getText());
+			if(getText(node, 'hour_budget').trim() != '')
+				project.Hour_Budget__c = Double.valueOf(getText(node, 'hour_budget'));
 			//TODO: link to staff in future version
 			//staff/staff_id
 			//staff/staff_id

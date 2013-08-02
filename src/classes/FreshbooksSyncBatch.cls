@@ -22,10 +22,29 @@ global class FreshbooksSyncBatch implements Schedulable, Database.Batchable<Inte
 	}
 
 	global void requeue(FreshbooksSyncTask t, Exception e){
-		if(t.retries>3) throw e; 
+		if(t.retries>2) throw e; 
 		taskQueueSeen.remove(t.fingerprint());
 		taskQueue.add(t);
 		t.retries++;
+	}
+	
+	@isTest
+	public static void test_requeue(){
+		FreshbooksSyncBatch b = new FreshbooksSyncBatch();
+		FreshbooksSyncTask t = new FreshbooksSyncTask('test', 'test', 0);
+		b.requeue(t);
+		System.assertEquals(t.retries, 1);
+		b.requeue(t);
+		System.assertEquals(t.retries, 2);
+		b.requeue(t);
+		System.assertEquals(t.retries, 3);
+		Exception caughtException;
+		try{
+			b.requeue(t);
+		}catch(Exception e){
+			caughtException = e;
+		}
+		System.assert(caughtException != null);
 	}
 	
 	global void execute(Database.BatchableContext BC, List<Integer> scope){
@@ -103,6 +122,21 @@ global class FreshbooksSyncBatch implements Schedulable, Database.Batchable<Inte
 				upsert invoices Freshbooks_Invoice_ID__c;
 			}
 		}
+	}
+	
+	@isTest
+	public static void test_execute(){
+		FreshbooksSyncBatch controller = new FreshbooksSyncBatch();
+		controller.taskQueue = new List<FreshbooksSyncTask>{new FreshbooksSyncTask('all_clients', '123', 0)};
+		controller.execute(null, new List<Integer>{0});
+		controller.taskQueue = new List<FreshbooksSyncTask>{new FreshbooksSyncTask('client', '123', 0)};
+		controller.execute(null, new List<Integer>{0});
+		controller.taskQueue = new List<FreshbooksSyncTask>{new FreshbooksSyncTask('projects_by_client', '123', 0)};
+		controller.execute(null, new List<Integer>{0});
+		controller.taskQueue = new List<FreshbooksSyncTask>{new FreshbooksSyncTask('time_entries_by_project', '123', 0)};
+		controller.execute(null, new List<Integer>{0});
+		controller.taskQueue = new List<FreshbooksSyncTask>{new FreshbooksSyncTask('invoices_by_client', '123', 0)};
+		controller.execute(null, new List<Integer>{0});
 	}
 	
 	global void finish(Database.BatchableContext BC){

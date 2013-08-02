@@ -215,6 +215,7 @@ public with sharing class FreshbooksAPI {
 	public static Freshbooks_Project__c[] getProjects(){
 		return getProjects(null);
 	}
+	
 	public static Freshbooks_Project__c[] getProjects(Map<String,String> filter){
 		List<Freshbooks_Project__c> projectsToReturn = new List<Freshbooks_Project__c>();
 		Integer lastBatchSize = LIST_PAGE_COUNT_MAX;
@@ -248,6 +249,14 @@ public with sharing class FreshbooksAPI {
 			projectsToReturn.add(xml2Project(projectNode));
 		}
 		return projectsToReturn;
+	}
+	
+	@isTest
+	public static void test_getProjects(){
+		inTest = true;
+		Freshbooks_Project__c[] projects = getProjects();
+		System.assert(projects != null);
+		System.assert(projects.size() == 1);
 	}
 	
 	private static String getText(DOM.XMLNode parentNode, String nodeName){
@@ -348,6 +357,13 @@ public with sharing class FreshbooksAPI {
 			toReturn.add(xml2Invoice(invoice));
 		}
 		return toReturn;
+	}
+	@isTest
+	public static void test_getInvoices(){
+		inTest = true;
+		Freshbooks_Invoice__c[] invoices = getInvoices();
+		System.assert(invoices != null);
+		System.assert(invoices.size() == 1);
 	}
 	
 	private static Freshbooks_Invoice__c xml2Invoice(Dom.Xmlnode node){

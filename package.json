@@ -1,0 +1,19 @@
+{
+  "name": "tests",
+  "version": "0.0.0",
+  "description": "ui tests",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha --timeout 15000 --no-colors"
+  },
+  "author": "",
+  "dependencies": {
+  },
+  "main": "index.js",
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "webdriverio": "^2.4.5"
+  }
+}

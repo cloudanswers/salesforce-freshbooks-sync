@@ -1,0 +1,92 @@
+<project basedir="." xmlns:sf="antlib:com.salesforce">
+
+    <taskdef resource="com/salesforce/antlib.xml"
+             classPath="lib/ant-salesforce.jar"
+             uri="antlib:com.salesforce"/>
+
+    <property environment="env"/>
+
+    <target name="bundleStaticResources">
+        <zip destfile="src/staticresources/freshbooks_connector_resources.resource" 
+             basedir="resource-bundles/freshbooks_connector_resources.resource" />
+    </target>
+
+    <target name="unbundleStaticResources">
+        <unzip 
+            src="src/staticresources/freshbooks_connector_resources.resource" 
+            dest="resource-bundles/freshbooks_connector_resources.resource"
+        />
+    </target>
+
+    <target name="deploy" description="Deploys the code to salesforce.com">
+        <echo message="Deploying to Salesforce..."/>
+        <!-- this file can't be deployed -->
+        <delete file="src/layouts/SocialPost-Social Post Layout.layout"/>
+        <antcall target="bundleStaticResources" />
+        <sf:deploy username="${env.SALESFORCE_USERNAME}"
+                   password="${env.SALESFORCE_PASSWORD}"
+                   serverurl="${env.SALESFORCE_URL}"
+                   deployRoot="src"/>
+    </target>
+
+    <target name="test" description="Test without saving to salesforce">
+        <echo message="Testing deployment..."/>
+        <!-- this file can't be deployed -->
+        <delete file="src/layouts/SocialPost-Social Post Layout.layout"/>
+        <antcall target="bundleStaticResources" />
+        <sf:deploy username="${env.SALESFORCE_USERNAME}"
+                   password="${env.SALESFORCE_PASSWORD}"
+                   serverurl="${env.SALESFORCE_URL}"
+                   deployRoot="src"
+                   checkOnly="true"/>
+    </target>
+
+    <target name="refresh" description="Refresh from org">
+        <sf:retrieve username="${env.SALESFORCE_USERNAME}"
+                     password="${env.SALESFORCE_PASSWORD}"
+                     serverurl="${env.SALESFORCE_URL}"
+                     retrieveTarget="src"
+                     unpackaged="src/package.xml"/>
+                     <!-- doing unpackaged until we determine package structure -->
+        <!-- this file can't be deployed -->
+        <delete file="src/layouts/SocialPost-Social Post Layout.layout"/>
+        <antcall target="unbundleStaticResources" />
+    </target>
+
+    <target name="refreshFromPackage" description="Refresh from org">
+        <sf:retrieve username="${env.SALESFORCE_USERNAME}"
+                     password="${env.SALESFORCE_PASSWORD}"
+                     serverurl="${env.SALESFORCE_URL}"
+                     retrieveTarget="src"
+                     packageNames="${env.SALESFORCE_PACKAGE_NAME}"/>
+                     <!-- doing unpackaged until we determine package structure -->
+        <!-- this file can't be deployed -->
+        <delete file="src/layouts/SocialPost-Social Post Layout.layout"/>
+        <antcall target="unbundleStaticResources" />
+    </target>
+
+    <target name="refreshInstalledPackages" description="Refresh managed packages from org">
+        <sequential>
+            <sf:retrieve 
+                username="${env.SALESFORCE_USERNAME}"
+                password="${env.SALESFORCE_PASSWORD}"
+                serverurl="${env.SALESFORCE_URL}"
+                retrieveTarget="installedPackages"
+                unpackaged="installedPackages/package.xml"/>
+            <!-- remove packages we can't control -->
+            <delete file="installedPackages/installedPackages/sf_com_apps.installedPackage"/>
+            <delete file="installedPackages/installedPackages/sf_chttr_apps.installedPackage"/>
+        </sequential>
+    </target>
+
+    <target name="installPackages" description="Install ">
+        <sf:deploy 
+            username="${env.SALESFORCE_USERNAME}"
+            password="${env.SALESFORCE_PASSWORD}"
+            serverurl="${env.SALESFORCE_URL}"
+            deployRoot="installedPackages"/>
+    </target>
+
+    
+
+</project>

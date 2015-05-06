@@ -1,35 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Enterprise Connector for Freshbooks and Salesforce</fullName>
+    <apiAccessLevel>Unrestricted</apiAccessLevel>
+    <namespacePrefix>ccp_freshbooks2</namespacePrefix>
     <types>
-        <members>*</members>
+        <members>CambridgeCloudPartnersREST</members>
+        <members>FreshbooksAPI</members>
+        <members>FreshbooksSync</members>
+        <members>FreshbooksSyncBatch</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>FreshbooksSync</members>
+        <members>FreshbooksSyncAccount</members>
         <name>ApexPage</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexTrigger</name>
     </types>
     <types>
         <members>Freshbooks2salesforce</members>
         <name>CustomApplication</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Account.Freshbooks_Client_ID__c</members>
+        <members>Account.Freshbooks_Email__c</members>
+        <members>Account.Freshbooks_Notes__c</members>
+        <members>Freshbooks_Invoice__c.Account__c</members>
+        <members>Freshbooks_Invoice__c.Amount_Outstanding__c</members>
+        <members>Freshbooks_Invoice__c.Amount__c</members>
+        <members>Freshbooks_Invoice__c.Freshbooks_Invoice_ID__c</members>
+        <members>Freshbooks_Invoice__c.Invoice_Date__c</members>
+        <members>Freshbooks_Invoice__c.Status__c</members>
+        <members>Freshbooks_Project__c.Account__c</members>
+        <members>Freshbooks_Project__c.Bill_Method__c</members>
+        <members>Freshbooks_Project__c.Description__c</members>
+        <members>Freshbooks_Project__c.Freshbooks_Project_ID__c</members>
+        <members>Freshbooks_Project__c.Hour_Budget__c</members>
+        <members>Freshbooks_Project__c.Rate__c</members>
+        <members>Freshbooks_Settings_Protected__c.Subdomain__c</members>
+        <members>Freshbooks_Settings_Protected__c.Token__c</members>
+        <members>Freshbooks_Time_Entry__c.Date__c</members>
+        <members>Freshbooks_Time_Entry__c.Freshbooks_Project__c</members>
+        <members>Freshbooks_Time_Entry__c.Freshbooks_Time_Entry_ID__c</members>
+        <members>Freshbooks_Time_Entry__c.Hours__c</members>
+        <members>Freshbooks_Time_Entry__c.Notes__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Freshbooks_Invoice__c</members>
+        <members>Freshbooks_Project__c</members>
+        <members>Freshbooks_Settings_Protected__c</members>
+        <members>Freshbooks_Time_Entry__c</members>
         <name>CustomObject</name>
     </types>
     <types>
-        <members>*</members>
-        <name>CustomObjectTranslation</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>Freshbooks_Invoice__c</members>
+        <members>Freshbooks_Project__c</members>
+        <members>Freshbooks_Sync</members>
         <name>CustomTab</name>
     </types>
     <types>
@@ -39,12 +64,17 @@
         <name>Layout</name>
     </types>
     <types>
-        <members>Freshbooks</members>
-        <name>Report</name>
+        <members>Freshbooks_Invoice__c.All</members>
+        <members>Freshbooks_Project__c.All</members>
+        <name>ListView</name>
     </types>
     <types>
-        <members>*</members>
+        <members>freshbooks_connector_resources</members>
         <name>StaticResource</name>
     </types>
-    <version>26.0</version>
+    <types>
+        <members>Account.Sync_From_Freshbooks</members>
+        <name>WebLink</name>
+    </types>
+    <version>31.0</version>
 </Package>

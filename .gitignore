@@ -1,2 +1,22 @@
+# eclipse
+.project
 .settings
+salesforce.schema
 Referenced Packages
+
+# mavensmate
+config
+mm*.log
+*.sublime-project
+*.sublime-settings
+*.sublime-workspace
+
+# webstorm/jetbrains
+.idea
+
+# foreman
+.env
+
+# node
+node_modules
+

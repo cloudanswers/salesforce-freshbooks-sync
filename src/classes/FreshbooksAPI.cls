@@ -170,7 +170,7 @@ public with sharing class FreshbooksAPI {
             */
             
             a.Freshbooks_Notes__c = node.getChildElement('notes',FRESHBOOKS_XML_API_NS).getText();
-            a.BillingStreet = node.getChildElement('p_street1',FRESHBOOKS_XML_API_NS).getText()+node.getChildElement('p_street2',FRESHBOOKS_XML_API_NS).getText();
+            a.BillingStreet = node.getChildElement('p_street1',FRESHBOOKS_XML_API_NS).getText()+'\r\n'+node.getChildElement('p_street2',FRESHBOOKS_XML_API_NS).getText();
             //a.BillingStreet += node.getChildElement('p_street2',FRESHBOOKS_XML_API_NS).getText();
             a.BillingCity = node.getChildElement('p_city',FRESHBOOKS_XML_API_NS).getText();
             a.BillingState = node.getChildElement('p_state',FRESHBOOKS_XML_API_NS).getText();

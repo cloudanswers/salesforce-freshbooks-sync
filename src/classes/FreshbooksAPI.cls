@@ -136,7 +136,7 @@ public with sharing class FreshbooksAPI {
                     appendTagAndText(client,'p_street1',str[0].normalizeSpace().removeStart(',').removeEnd(','));
                     appendTagAndText(client,'p_street2',str[1].normalizeSpace().removeStart(',').removeEnd(','));
                 } else {
-                    appendTagAndText(client,'p_street1',a.BillingStreet.replace('\r\n', ', ').replace(',,', ',').normalizeSpace().removeStart(',').removeEnd(','));
+                    appendTagAndText(client,'p_street1',a.BillingStreet.replace('\r\n', ', ').replace('\n', ', ').replace(',,', ',').normalizeSpace().removeStart(',').removeEnd(','));
                 }
 		//client.addChildElement('p_street2',null,null).addTextNode(primaryStreet2);
 		appendTagAndText(client,'p_city',a.BillingCity);

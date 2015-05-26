@@ -129,7 +129,15 @@ public with sharing class FreshbooksAPI {
 		//client.addChildElement('language',null,null).addTextNode(language);
 		//client.addChildElement('currency_code',null,null).addTextNode(currencyCode);
 		appendTagAndText(client,'notes',a.Freshbooks_Notes__c);
-		appendTagAndText(client,'p_street1',a.BillingStreet);
+		
+                // If we've got two lines of street address, put them into separate lines, if not put into one and clean it up.
+                String[] str = a.BillingStreet.split('\r\n');
+                if( str != null && str.size()==2){
+                    appendTagAndText(client,'p_street1',str[0].normalizeSpace().removeStart(',').removeEnd(','));
+                    appendTagAndText(client,'p_street2',str[1].normalizeSpace().removeStart(',').removeEnd(','));
+                } else {
+                    appendTagAndText(client,'p_street1',a.BillingStreet.replace('\r\n', ', ').replace('\n', ', ').replace(',,', ',').normalizeSpace().removeStart(',').removeEnd(','));
+                }
 		//client.addChildElement('p_street2',null,null).addTextNode(primaryStreet2);
 		appendTagAndText(client,'p_city',a.BillingCity);
 		appendTagAndText(client,'p_state',a.BillingState);

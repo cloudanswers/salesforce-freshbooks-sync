@@ -5,6 +5,7 @@ public with sharing class FreshbooksAPI {
 	public final static String FRESHBOOKS_XML_API_NS = 'http://www.freshbooks.com/api/';
 	public final static String FRESHBOOKS_ACCOUNT_FIELDS = 'Name,Phone,Fax,Freshbooks_Client_ID__c,Freshbooks_Email__c,Freshbooks_Notes__c,BillingStreet,BillingCity,BillingState,BillingCountry,BillingPostalCode';
 	public final static Integer LIST_PAGE_COUNT_MAX = 100;
+	public final static String NEW_LINE_DELIMITER = '\r\n';
 	
 	private static final String TEST_GET_CLIENTS_XML = '<?xml version="1.0" encoding="utf-8"?> <response xmlns="http://www.freshbooks.com/api/" status="ok"> <clients page="1" per_page="15" pages="3" total="42"> <client> <client_id>13</client_id> <first_name>Jane</first_name> <last_name>Doe</last_name> <organization>ABC Corp</organization> <email>janedoe@freshbooks.com</email> <username>janedoe</username> <work_phone>(555) 123-4567</work_phone> <home_phone>(555) 234-5678</home_phone> <mobile></mobile> <fax></fax> <language>en</language> <currency_code>USD</currency_code> <credit currency="USD" deprecated="true">123.45</credit>  <credits> <credit currency="USD">123.45</credit> <credit currency="CAD">43.45</credit> <credit currency="EUR">12.00</credit> </credits> <notes>Prefers email over phone calls</notes>  <p_street1>123 Fake St.</p_street1> <p_street2>Unit 555</p_street2> <p_city>New York</p_city> <p_state>New York</p_state> <p_country>United States</p_country> <p_code>553132</p_code>  <s_street1></s_street1> <s_street2></s_street2> <s_city></s_city> <s_state></s_state> <s_country></s_country> <s_code></s_code> <url deprecated="true">https://sample.freshbooks.com/view/Vbbfs324trTkxer</url> <auth_url deprecated="true">https://sample.freshbooks.com/clients/13</auth_url> <links> <client_view>https://sample.freshbooks.com/view/Vbbfs324trTkxer</client_view> <view>https://sample.freshbooks.com/clients/13</view> <statement>https://sample.freshbooks.com/view/3EbEwAkJGJkuJHSN</statement> </links> <vat_name></vat_name> <vat_number></vat_number> <updated>2009-08-12 09:00:00</updated> <folder>active</folder> </client> </clients> </response>';
 	public static Account[] getClients(){
@@ -131,12 +132,15 @@ public with sharing class FreshbooksAPI {
 		appendTagAndText(client,'notes',a.Freshbooks_Notes__c);
 		
                 // If we've got two lines of street address, put them into separate lines, if not put into one and clean it up.
-                String[] str = a.BillingStreet.split('\r\n');
-                if( str != null && str.size()==2){
+                String[] str = a.BillingStreet.split(NEW_LINE_DELIMITER);
+                if( str != null && str.size()==2 ){
                     appendTagAndText(client,'p_street1',str[0].normalizeSpace().removeStart(',').removeEnd(','));
                     appendTagAndText(client,'p_street2',str[1].normalizeSpace().removeStart(',').removeEnd(','));
+                } else if ( str != null && str.size()>2 ) {
+                    appendTagAndText(client,'p_street1',str[0].normalizeSpace().removeStart(',').removeEnd(','));
+                    appendTagAndText(client,'p_street2',a.BillingStreet.removeStartIgnoreCase(str[0]).replace(NEW_LINE_DELIMITER, ', ').replace('\n', ', ').normalizeSpace().replace(', ,', ',').replace(',,', ',').removeStart(',').removeEnd(','));
                 } else {
-                    appendTagAndText(client,'p_street1',a.BillingStreet.replace('\r\n', ', ').replace('\n', ', ').replace(',,', ',').normalizeSpace().removeStart(',').removeEnd(','));
+                    appendTagAndText(client,'p_street1',a.BillingStreet.replace(NEW_LINE_DELIMITER, ', ').replace('\n', ', ').normalizeSpace().replace(', ,', ',').replace(',,', ',').removeStart(',').removeEnd(','));
                 }
 		//client.addChildElement('p_street2',null,null).addTextNode(primaryStreet2);
 		appendTagAndText(client,'p_city',a.BillingCity);
@@ -179,7 +183,9 @@ public with sharing class FreshbooksAPI {
 			
 			a.Freshbooks_Notes__c = node.getChildElement('notes',FRESHBOOKS_XML_API_NS).getText();
 			a.BillingStreet = node.getChildElement('p_street1',FRESHBOOKS_XML_API_NS).getText();
-			//a.BillingStreet += node.getChildElement('p_street2',FRESHBOOKS_XML_API_NS).getText();
+                        if(node.getChildElement('p_street2',FRESHBOOKS_XML_API_NS).getText().normalizeSpace().length()>0){
+                            a.BillingStreet += NEW_LINE_DELIMITER + node.getChildElement('p_street2',FRESHBOOKS_XML_API_NS).getText();
+                        }
 			a.BillingCity = node.getChildElement('p_city',FRESHBOOKS_XML_API_NS).getText();
 			a.BillingState = node.getChildElement('p_state',FRESHBOOKS_XML_API_NS).getText();
 			a.BillingCountry = node.getChildElement('p_country',FRESHBOOKS_XML_API_NS).getText();

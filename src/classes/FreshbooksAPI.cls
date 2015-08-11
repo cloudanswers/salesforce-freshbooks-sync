@@ -533,8 +533,76 @@ public with sharing class FreshbooksAPI {
         System.assert(te.Freshbooks_Time_Entry_ID__c == '123');
     }
     
+
+    // --- payments
     
+    public static Freshbooks_Payment__c[] getPayments(){
+        return getPayments(null);
+    }
+    public static Freshbooks_Payment__c[] getPayments(Map<String,String> filter){
+        List<Freshbooks_Payment__c> toReturn = new List<Freshbooks_Payment__c>();
+        Integer lastBatchSize = LIST_PAGE_COUNT_MAX;
+        Integer pageNumber = 1;
+        while(lastBatchSize == LIST_PAGE_COUNT_MAX){
+            Freshbooks_Payment__c[] batch = getPayments(pageNumber,filter);
+            pageNumber++;
+            lastBatchSize = batch.size();
+            toReturn.addAll(batch);
+        }
+        return toReturn;
+    }
+    public static final String TEST_GET_PAYMENTS_XML = '<?xml version="1.0" encoding="utf-8"?><response xmlns="http://www.freshbooks.com/api/" status="ok"><payments page="1" per_page="10" pages="23" total="221"><payment><payment_id>123</payment_id><invoice_id>123</invoice_id><date>2007-03-02 12:04:11</date><type>VISA</type><notes></notes><client_id>43</client_id><currency_code>CAD</currency_code><updated>2009-08-12 09:00:00</updated><gateway_transaction><reference_id>2156858189</reference_id><gateway_name>Authorize.Net</gateway_name></gateway_transaction><amount>301.21</amount></payment></payments></response>';
+    public static Freshbooks_Payment__c[] getPayments(Integer pageNumber, Map<String,String> filter){
+        Dom.Document requestDoc = new Dom.Document();
+        Dom.XmlNode root = requestDoc.createRootElement('request', null, null);
+        root.setAttribute('method', 'payment.list');
+        root.addChildElement('page', null, null).addTextNode(String.valueOf(pageNumber));
+        if(filter != null && !filter.isEmpty())
+            for(String k : filter.keySet())
+                root.addChildElement(k,null,null).addTextNode(filter.get(k));
+        if(filter == null || !filter.keySet().contains('per_page'))
+            root.addChildElement('per_page',null,null).addTextNode(String.valueOf(LIST_PAGE_COUNT_MAX));
+        Dom.Document responseDoc = ( inTest == true ? CambridgeCloudPartnersREST.domify(TEST_GET_TIME_ENTRIES_XML) : post(requestDoc) );
+        checkError(responseDoc,'Error occured when getting time entries');
+        Dom.XmlNode responseRoot = responseDoc.getRootElement();
+        Dom.XmlNode payments = responseRoot.getChildElement('time_entries',FRESHBOOKS_XML_API_NS);
+        List<Freshbooks_Payment__c> toReturn = new List<Freshbooks_Payment__c>();
+        if(payments != null && payments.getChildElements() != null && !payments.getChildElements().isEmpty())
+        for(Dom.Xmlnode payment : payments.getChildElements()){
+            toReturn.add(xml2Payment(payment));
+        }
+        return toReturn;
+    }
     
+    private static Freshbooks_Payment__c xml2Payment(Dom.Xmlnode node){
+        Freshbooks_Payment__c payment = new Freshbooks_Payment__c();
+        try{
+            payment.Name = node.getChildElement('payment_id',FRESHBOOKS_XML_API_NS).getText();
+            payment.Freshbooks_Payment_ID__c = Integer.valueOf(node.getChildElement('payment_id',FRESHBOOKS_XML_API_NS).getText());
+            payment.Freshbooks_Invoice__r = new Freshbooks_Invoice__c(Freshbooks_Invoice_ID__c = node.getChildElement('invoice_id',FRESHBOOKS_XML_API_NS).getText());
+            payment.Date__c = Date.valueOf(node.getChildElement('date',FRESHBOOKS_XML_API_NS).getText());
+            payment.Type__c = node.getChildElement('type',FRESHBOOKS_XML_API_NS).getText();
+            payment.Notes__c = node.getChildElement('notes',FRESHBOOKS_XML_API_NS).getText();
+            payment.Account__r = new Account(Freshbooks_Client_ID__c = node.getChildElement('client_id',FRESHBOOKS_XML_API_NS).getText());
+            payment.Currency_Code__c = node.getChildElement('currency_code',FRESHBOOKS_XML_API_NS).getText();
+            payment.Amount__c = Double.valueOf(node.getChildElement('amount',FRESHBOOKS_XML_API_NS).getText());
+        }catch(Exception e){
+            throw new FreshbooksException('Error parsing payment information response from Freshbooks: '+e.getMessage()+node);
+        }
+        return payment;
+    }
+
+    @isTest public static void test_xml2Payment(){
+        inTest = true;
+        Dom.Document doc = new Dom.Document();
+        doc.load(TEST_GET_PAYMENTS_XML);
+        Freshbooks_Payment__c p = xml2Payment(doc.getRootElement().getChildElement('payments',FRESHBOOKS_XML_API_NS).getChildElement('payment',FRESHBOOKS_XML_API_NS));
+        System.assertEquals('123', p.Name);
+        System.assertEquals(123, p.Freshbooks_Payment_ID__c);
+    }
+
+
+    // --- helpers
     
     /* handle later when we can do a describe on the data types
     private void zipperXmlToSObject(Dom.XmlNode node, Map<String,String> mappings, SObject sobj){

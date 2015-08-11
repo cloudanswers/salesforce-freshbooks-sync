@@ -120,6 +120,17 @@ global class FreshbooksSyncBatch implements Schedulable, Database.Batchable<Inte
 				if(invoices.size() == FreshbooksAPI.LIST_PAGE_COUNT_MAX)
 					taskQueue.add(new FreshbooksSyncTask('invoices_by_client',t.id,t.page+1));
 				upsert invoices Freshbooks_Invoice_ID__c;
+			}else if(t.action.equals('payments_by_client')){
+				Freshbooks_Payment__c[] payments;
+				try{
+					payments = FreshbooksAPI.getPayments(t.page, new Map<String,String>{'client_id'=>t.id});
+				}catch(Exception e){
+					requeue(t, e);
+					continue;
+				}
+				if(payments.size() == FreshbooksAPI.LIST_PAGE_COUNT_MAX)
+					taskQueue.add(new FreshbooksSyncTask('payments_by_client',t.id,t.page+1));
+				upsert payments Freshbooks_Payment_ID__c;
 			}
 		}
 	}
@@ -136,6 +147,8 @@ global class FreshbooksSyncBatch implements Schedulable, Database.Batchable<Inte
 		controller.taskQueue = new List<FreshbooksSyncTask>{new FreshbooksSyncTask('time_entries_by_project', '123', 0)};
 		controller.execute(null, new List<Integer>{0});
 		controller.taskQueue = new List<FreshbooksSyncTask>{new FreshbooksSyncTask('invoices_by_client', '123', 0)};
+		controller.execute(null, new List<Integer>{0});
+		controller.taskQueue = new List<FreshbooksSyncTask>{new FreshbooksSyncTask('payments_by_client', '123', 0)};
 		controller.execute(null, new List<Integer>{0});
 	}
 	

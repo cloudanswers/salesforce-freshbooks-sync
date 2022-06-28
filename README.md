@@ -1,8 +1,9 @@
-salesforce-freshbooks-sync
+CloudAnswrs Salesforce Freshbooks Sync
 ==========================
 
 The [Enterprise Freshbooks Connector for Salesforce](https://appexchange.salesforce.com/listingDetail?listingId=a0N30000003IvpuEAC) gives you a plug-and-play integration between Freshbooks (accounting) and Salesforce (sales and everythign else).
 
+![image](https://user-images.githubusercontent.com/493648/176129932-7e4524e1-8a4b-4b63-8654-eadcb044636d.png)
 
 Version 1.5
 -----------
@@ -25,4 +26,4 @@ Standard github style: fork it and send a pull request.
 License
 -------
 
-see LICENSE file, or Affero GPL
+Affero GPL v3 or later
